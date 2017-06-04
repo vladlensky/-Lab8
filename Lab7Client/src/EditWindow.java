@@ -29,7 +29,7 @@ public class EditWindow extends JFrame {
     private CollectTable collections;
     private LinkedList<NormalHuman> linkedList;
     private JPanel panel = new JPanel();
-    private NormalHuman nh= new NormalHuman();
+    private NormalHuman nh = new NormalHuman();
     private JTextField field = new JTextField(20);
     private JTextField thoughtsField = new JTextField();
     private JLabel label = new JLabel(ResourceBundle.getBundle("Locale",Interface.getLocale()).getString("Age"));
@@ -55,6 +55,7 @@ public class EditWindow extends JFrame {
             this.collections = collections;
             this.linkedList = linkedList;
             try {
+                nh = new NormalHuman();
                 nh.setName("SetName");
             } catch (KarlsonNameException e) {
             }
@@ -258,9 +259,9 @@ public class EditWindow extends JFrame {
             Interface.sendMessage();
             dispose();
         }catch(KarlsonNameException exc){
-            if(exc.getMessage().equals("empty"))excNameLabel.setText("Write name of NormalHuman");
+            if(exc.getMessage().equals("empty"))excNameLabel.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Write name of NormalHuman"));
                 else if(exc.getMessage().equals("rus")) excNameLabel.setText("Not russian characters");
-                    else excNameLabel.setText("NormalHuman can't be Karlson");
+                    else excNameLabel.setText("अल्लाह अकबर");
             panel.updateUI();
         }
     }

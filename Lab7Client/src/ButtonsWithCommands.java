@@ -20,6 +20,7 @@ public class ButtonsWithCommands {
     private JButton pause=new JButton(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Pause"));
     private JButton play=new JButton(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Play"));
     private JFrame jf1= new JFrame(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Remove"));
+    private JLabel alabel = new JLabel("");
     private Color c = null;
     private JFrame jf2 = new JFrame(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("AddInJson"));
     private JLabel label= new JLabel(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("PutHere"));
@@ -55,6 +56,7 @@ public class ButtonsWithCommands {
         jf1.setTitle(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Remove"));
         label.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("PutHere"));
         jf2.setTitle(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("AddInJson"));
+        alabel.setText("");
     }
     ButtonsWithCommands(JList<String> listCommands, LinkedList<NormalHuman> coll, CollectTable collt, JTable collections){
         this.listCommands=listCommands;
@@ -81,7 +83,6 @@ public class ButtonsWithCommands {
                 public void run() {
                     openedRemoveWindow=true;
                     jf1 = new JFrame(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Remove"));
-                    JLabel alabel = new JLabel("");
                     JTextField tf = new JTextField("", 50);
                     simpleFrame(jf1, label, alabel, tf);
                     if(coll.size()!=0)
@@ -109,16 +110,16 @@ public class ButtonsWithCommands {
                                 }
                             }
                             catch (NullPointerException | KarlsonNameException exc){
-                                alabel.setText("Wrong NormalHuman!");
+                                alabel.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("WrongNormalHuman"));
                             }
                             catch (ArrayIndexOutOfBoundsException exc){
-                                alabel.setText("There is no NormalHuman like this");
+                                alabel.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("NoNormalHumanLikeThis"));
                             }
                             catch (IllegalArgumentException exc){
                                 new Dialog("Данный человек ещё редактируется!!!",Interface.getColor());
                             }
                         }
-                    }); else alabel.setText("There is nothing to remove");
+                    }); else alabel.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("NothingToRemove"));
                     jf1.addWindowListener(new WindowAdapter() {
                         @Override
                         public void windowClosing(WindowEvent e) {
@@ -218,9 +219,10 @@ public class ButtonsWithCommands {
                         Interface.message.setTypeOfOperation(Message.add);
                         Interface.message.setState(ConnectionState.NEW_DATA);
                         Interface.sendMessage();
+                        nh.setTimeOfCreate();
                         jf2.dispose();
                     } catch (NullPointerException | KarlsonNameException exc) {
-                        alabel.setText("Wrong NormalHuman!");
+                        alabel.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("WrongNormalHuman"));
                     }
                 }
             });

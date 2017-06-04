@@ -49,7 +49,7 @@ public class ButtonsUnderTable {
             collt.removeData(collections.getSelectedRow());
             Interface.sendMessage();}
         else if(collections.getSelectedRow()!=-1 && Interface.notEditable.contains(coll.get(collections.getSelectedRow()).getId()))
-            new Dialog("Данный человек ещё редактируется!!!",Interface.getColor());
+            new Dialog("Данный человек редактируется!!!",Interface.getColor());
     }
     public void edit(){
         if((collections.getSelectedRow()!=-1&&!openedEditWindow) && !(Interface.notEditable.contains(coll.get(collections.getSelectedRow()).getId()))) {
@@ -83,7 +83,7 @@ public class ButtonsUnderTable {
             });
         }
         else if((collections.getSelectedRow()!=-1&&!openedEditWindow) && (Interface.notEditable.contains(coll.get(collections.getSelectedRow()).getId()))){
-            new Dialog("Данный человек уже редактируется!!!",Interface.getColor());
+            new Dialog("Данный человек редактируется!!!",Interface.getColor());
         }
     }
     public void showThoughts(){

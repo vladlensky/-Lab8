@@ -7,6 +7,7 @@ public class Locale_isl extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
+                {"DateTime","dd//MM//yyyy hh:mm:ss"},
                 { "true", "Já"},
                 { "false",   "enga"},
                 { "Delete",  "Til að fjarlægja"},
@@ -32,7 +33,15 @@ public class Locale_isl extends ListResourceBundle {
                 {"Ok","allt í lagi"},
                 {"SetName","Nafnið"},
                 {"MalishAndKarlson","Kid og Carlson"},
-                {"PutHere","Bæta við viðkomandi að json:"}
+                {"PutHere","Bæta við viðkomandi að json:"},
+                {"Разрыв соединения!Сервер отключён!","Slitnar!Þjónninn er niður!"},
+                {"Write name of NormalHuman","Skrifaðu nafn persónu"},
+                {"Данный человек редактируется!!!","Þessi manneskja breyta!!!"},
+                {"NothingToRemove","Það er ekkert að fjarlægja!"},
+                {"WrongNormalHuman","Ranga manneskju!"},
+                {"NoNormalHumanLikeThis","Það er engin slík manneskja!"},
+                {"Нет подключения!Сервер отключён!","Engin tenging! Þjónninn er niður!"},
+                {"Time","Sköpun tíma"}
         };
     }
 }

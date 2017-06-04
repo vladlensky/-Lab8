@@ -4,19 +4,28 @@ package classes;
  * Created by Mugenor on 23.02.2017.
  */
 
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class NormalHuman extends Human implements Comparable<NormalHuman>{
-
+    protected ZonedDateTime timeOfCreate = ZonedDateTime.now();
     protected Long age=1l;
     protected ArrayList<Thoughts> thoughts;
     public NormalHuman(String name) throws KarlsonNameException{
         super(name);
         this.thoughts = new ArrayList<Thoughts>();
+        timeOfCreate = ZonedDateTime.now();
+        SimpleDateFormat f = new SimpleDateFormat("yyyy mm dd hh mm ss");
+        f.format(timeOfCreate);
     }
+    public ZonedDateTime getTimeOfCreate(){return timeOfCreate;}
+    public void setTimeOfCreate() {timeOfCreate = ZonedDateTime.now();}
     public NormalHuman(){
         super();
         this.thoughts = new ArrayList<Thoughts>();
+        timeOfCreate = ZonedDateTime.now();
     }
     public class Thoughts implements Thinkable {
         protected String thought;

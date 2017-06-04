@@ -10,6 +10,7 @@ public class Locale_ru extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
+                {"DateTime","dd.MM.yyyy hh:mm:ss"},
                 { "true", "да"},
                 { "false",   "нет"},
                 { "Delete",  "Удалить"},
@@ -34,8 +35,17 @@ public class Locale_ru extends ListResourceBundle {
                 {"Resume","Продолжить"},
                 {"Ok","Принять"},
                 {"SetName","Имя"},
+                {"Разрыв соединения!Сервер отключён!","Разрыв соединения!Сервер отключён!"},
                 {"MalishAndKarlson","Малыш и Карлсон"},
-                {"PutHere","Добавьте человека в json:"}
+                {"PutHere","Добавьте человека в json:"},
+                {"Write name of NormalHuman","Напишите имя человека"},
+                {"Данный человек редактируется!!!","Данный человек редактируется!!!"},
+                {"NothingToRemove","Нечего удалять!"},
+                {"WrongNormalHuman","Неправильный человек!"},
+                {"NoNormalHumanLikeThis","Нет такого человека!"},
+                {"Нет подключения!Сервер отключён!","Нет подключения!Сервер отключён!"},
+                {"Time","Время создания"}
+
         };
     }
 }

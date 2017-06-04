@@ -7,6 +7,7 @@ public class Locale_isp extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
+                {"DateTime","dd//MM//yyyy hh:mm:ss"},
                 { "true", "sí"},
                 { "false",   "no"},
                 { "Delete",  "Eliminar"},
@@ -32,7 +33,15 @@ public class Locale_isp extends ListResourceBundle {
                 {"Ok","Bien"},
                 {"SetName","El nombre de"},
                 {"MalishAndKarlson","Kid y Carlson"},
-                {"PutHere","Agregar a la persona a JSON:"}
+                {"PutHere","Agregar a la persona a JSON:"},
+                {"Разрыв соединения!Сервер отключён!","La ruptura de la conexión!"},
+                {"Write name of NormalHuman","Escriba el nombre de la persona"},
+                {"Данный человек редактируется!!!","Este hombre se está editando!!!"},
+                {"NothingToRemove","No tiene nada que quitar!"},
+                {"WrongNormalHuman","La persona equivocada!"},
+                {"NoNormalHumanLikeThis","No hay tal persona!"},
+                {"Нет подключения!Сервер отключён!","No hay conexión! El servidor está inactivo!"},
+                {"Time","El tiempo de la creación"}
         };
     }
 }

@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.io.*;
 import java.util.List;
@@ -33,6 +36,7 @@ public class Interface{
     private static JFrame language = new JFrame("Choose language!");
     private static String file="";
     private static Color color=null;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ResourceBundle.getBundle("Locale",locale).getString("DateTime"));
     private static JButton colorChooserButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("ChooseColor"));
     private static JButton languageChooserButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("ChooseLanguage"));
     static LinkedList<NormalHuman> coll =null;
@@ -49,6 +53,8 @@ public class Interface{
     public static Point getFrameLocation(){return jf.getLocation();}
     public synchronized static String getFile(){return file;}
     public static Color getColor() {return color;}
+    public static DateTimeFormatter getFormatter() {return formatter;}
+    public static void setFormatter(DateTimeFormatter formatter) {Interface.formatter = formatter;}
     public static Locale getLocale() {return locale;}
     public static void setLocale(Locale locale) {
         Interface.locale = locale;
@@ -181,7 +187,6 @@ public class Interface{
         jf.setTitle("Малыш и Карлсон");
         jf.setLocationRelativeTo(null);
         jf.setLayout(new GridLayout(3,1));
-
         jf.addWindowListener(new WindowAdapter() {
         });
         jf.addWindowListener(new WindowAdapter() {
@@ -197,13 +202,15 @@ public class Interface{
         panelc.setBackground(Color.white);
         paneld.setBackground(Color.white);
         for(int i=0;i<coll.size();i++){
-            String[] obj = {coll.get(i).getName(),coll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(coll.get(i).getTroublesWithTheLaw().toString())};
+            String[] obj = {coll.get(i).getName(),coll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(coll.get(i).getTroublesWithTheLaw().toString()),coll.get(i).getTimeOfCreate().format(formatter)};
             collt.addData(obj);
         }
         collections.setForeground(Color.BLACK);
         collections.getColumnModel().getColumn(0).setMinWidth(250);
         collections.getColumnModel().getColumn(1).setMinWidth(100);
         collections.getColumnModel().getColumn(2).setMinWidth(100);
+        collections.getColumnModel().getColumn(3).setMinWidth(100);
+        collections.getColumnModel().getColumn(3).setResizable(false);
         collections.getColumnModel().getColumn(2).setResizable(false);
         collections.getColumnModel().getColumn(1).setResizable(false);
         collections.getColumnModel().getColumn(0).setResizable(false);

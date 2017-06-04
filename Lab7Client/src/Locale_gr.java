@@ -7,6 +7,7 @@ public class Locale_gr extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
+                {"DateTime","dd//MM//yyyy hh:mm:ss"},
                 { "true", "ναι"},
                 { "false",   "όχι"},
                 { "Delete",  "Διαγραφή"},
@@ -32,7 +33,15 @@ public class Locale_gr extends ListResourceBundle {
                 {"Ok","εντάξει"},
                 {"SetName","Όνομα"},
                 {"MalishAndKarlson","Παιδί και Carlson"},
-                {"PutHere","Προσθέστε το άτομο σε JSON:"}
+                {"PutHere","Προσθέστε το άτομο σε JSON:"},
+                {"Разрыв соединения!Сервер отключён!","Για να τερματίσετε τη σύνδεση!"},
+                {"Write name of NormalHuman","Γράψτε το όνομα του προσώπου"},
+                {"Данный человек редактируется!!!","Αυτό το άτομο έχει!!!"},
+                {"NothingToRemove","Τίποτα για διαγραφή!"},
+                {"WrongNormalHuman","Λάθος άνθρωπος!"},
+                {"NoNormalHumanLikeThis","Δεν υπάρχει τέτοιο άτομο!"},
+                {"Нет подключения!Сервер отключён!","Δεν υπάρχει σύνδεση! Ο διακομιστής είναι!"},
+                {"Time","Ώρα δημιουργίας"}
         };
     }
 }
