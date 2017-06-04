@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Lab7Client:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Lab7Client_jar2</output-path>
+    <root id="archive" name="Lab7Client.jar">
+      <element id="module-output" name="Lab7Client" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/gson-2.2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jl1.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/json-simple-1.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/fastjson-1.2.24.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
