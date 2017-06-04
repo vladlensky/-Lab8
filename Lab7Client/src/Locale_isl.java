@@ -11,7 +11,7 @@ public class Locale_isl extends ListResourceBundle {
                 { "false",   "enga"},
                 { "Delete",  "Til að fjarlægja"},
                 {"Edit",     "Til að breyta"},
-                {"DoHust",     "Запустить фичу!!!"},
+                {"DoHust",     "þú keyrir!!!"},
                 {"ShowThoughts",  "Sýna hugsanir"},
                 {"Do",   "Til að gera"},
                 {"hust",     "Flís"},
@@ -26,13 +26,13 @@ public class Locale_isl extends ListResourceBundle {
                 {"Cancel",   "Nálægt"},
                 {"TroublesWithTheLaw",   "í vandræðum með lögum"},
                 {"Play",  "Spila"},
-                {"Stop",   "Остановить"},
+                {"Stop",   "stöðva"},
                 {"Pause","Hlé"},
                 {"Resume","Ný"},
                 {"Ok","allt í lagi"},
                 {"SetName","Nafnið"},
-                {"MalishAndKarlson","Малыш и Карлсон"},
-                {"PutHere","Добавьте человека в json:"}
+                {"MalishAndKarlson","Kid og Carlson"},
+                {"PutHere","Bæta við viðkomandi að json:"}
         };
     }
 }

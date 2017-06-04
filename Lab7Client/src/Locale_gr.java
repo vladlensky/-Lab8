@@ -11,7 +11,7 @@ public class Locale_gr extends ListResourceBundle {
                 { "false",   "όχι"},
                 { "Delete",  "Διαγραφή"},
                 {"Edit",     "Αλλαγή"},
-                {"DoHust",     "Запустить фичу!!!"},
+                {"DoHust",     "μπορείτε να εκτελέσετε!!!"},
                 {"ShowThoughts",  "Εμφάνιση σκέψεις"},
                 {"Do",   "Να"},
                 {"hust",     "Μάρκα"},
@@ -31,8 +31,8 @@ public class Locale_gr extends ListResourceBundle {
                 {"Resume","Βιογραφικό"},
                 {"Ok","εντάξει"},
                 {"SetName","Όνομα"},
-                {"MalishAndKarlson","Малыш и Карлсон"},
-                {"PutHere","Добавьте человека в jsoxxn:"}
+                {"MalishAndKarlson","Παιδί και Carlson"},
+                {"PutHere","Προσθέστε το άτομο σε JSON:"}
         };
     }
 }

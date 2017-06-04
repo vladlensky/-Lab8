@@ -10,7 +10,7 @@ public class Locale_isp extends ListResourceBundle {
                 { "true", "sí"},
                 { "false",   "no"},
                 { "Delete",  "Eliminar"},
-                {"DoHust",     "Запустить фичу!!!"},
+                {"DoHust",     "ejecutar!!!"},
                 {"Edit",     "Cambiar"},
                 {"ShowThoughts",  "Mostrar los pensamientos"},
                 {"Do",   "Hacer"},
@@ -31,8 +31,8 @@ public class Locale_isp extends ListResourceBundle {
                 {"Resume","Curriculum vitae"},
                 {"Ok","Bien"},
                 {"SetName","El nombre de"},
-                {"MalishAndKarlson","Малыш и Карлсон"},
-                {"PutHere","Добавьте человека в json:"}
+                {"MalishAndKarlson","Kid y Carlson"},
+                {"PutHere","Agregar a la persona a JSON:"}
         };
     }
 }
