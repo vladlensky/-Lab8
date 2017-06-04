@@ -86,7 +86,7 @@ public class CollectTable extends AbstractTableModel{
         str[0]=nh.getName();
         str[1]=nh.getAge().toString();
         str[2]=ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(nh.getTroublesWithTheLaw().toString());
-        str[3]=nh.getTimeOfCreate().toString();
+        str[3]=nh.getTimeOfCreate().format(Interface.getFormatter());
         data.add(str);
         fireTableDataChanged();
     }
@@ -104,7 +104,7 @@ public class CollectTable extends AbstractTableModel{
         str[0]=nh.getName();
         str[1]=nh.getAge().toString();
         str[2]=ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(nh.getTroublesWithTheLaw().toString());
-        str[3]=nh.getTimeOfCreate().toString();
+        str[3]=nh.getTimeOfCreate().format(Interface.getFormatter());
         removeData(numberRow);
         data.add(numberRow,str);
         fireTableDataChanged();
