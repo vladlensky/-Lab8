@@ -44,7 +44,10 @@ public class Locale_ru extends ListResourceBundle {
                 {"WrongNormalHuman","Неправильный человек!"},
                 {"NoNormalHumanLikeThis","Нет такого человека!"},
                 {"Нет подключения!Сервер отключён!","Нет подключения!Сервер отключён!"},
-                {"Time","Время создания"}
+                {"Time","Время создания"},
+                {"Sort","Сортировка"},
+                {"Filter","Фильтр"},
+                {"Reset","Сброс"}
 
         };
     }

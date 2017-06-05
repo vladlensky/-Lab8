@@ -7,7 +7,7 @@ public class Locale_isp extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
-                {"DateTime","dd//MM//yyyy hh:mm:ss"},
+                {"DateTime","dd/MM/yyyy hh:mm:ss"},
                 { "true", "sí"},
                 { "false",   "no"},
                 { "Delete",  "Eliminar"},
@@ -41,7 +41,10 @@ public class Locale_isp extends ListResourceBundle {
                 {"WrongNormalHuman","La persona equivocada!"},
                 {"NoNormalHumanLikeThis","No hay tal persona!"},
                 {"Нет подключения!Сервер отключён!","No hay conexión! El servidor está inactivo!"},
-                {"Time","El tiempo de la creación"}
+                {"Time","El tiempo de la creación"},
+                {"Sort","Tipo"},
+                {"Filter","El filtro"},
+                {"Reset","Restablecer"}
         };
     }
 }

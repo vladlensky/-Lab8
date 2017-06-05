@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.io.*;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import classes.*;
 import com.google.gson.Gson;
 import org.json.simple.*;
@@ -39,6 +41,7 @@ public class Interface{
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ResourceBundle.getBundle("Locale",locale).getString("DateTime"));
     private static JButton colorChooserButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("ChooseColor"));
     private static JButton languageChooserButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("ChooseLanguage"));
+    private static JButton sortButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("Sort"));
     static LinkedList<NormalHuman> coll =null;
     private static DefaultListModel<String> dlm= new DefaultListModel<>();
     private static JList<String> listCommands = new JList<>(dlm);
@@ -69,17 +72,20 @@ public class Interface{
         editButton.setText(ResourceBundle.getBundle("Locale",locale).getString("Edit"));
         doButton.setText(ResourceBundle.getBundle("Locale",locale).getString("Do"));
         jf.setTitle(ResourceBundle.getBundle("Locale",locale).getString("MalishAndKarlson"));
+        sortButton.setText(ResourceBundle.getBundle("Locale",locale).getString("Sort"));
         bwc.updateLanguage();
         but.updateLanguage();
         collt.updateLanguage();
-        collections.getColumnModel().getColumn(0);
-        collections.getColumnModel().getColumn(1);
-        collections.getColumnModel().getColumn(2);
+        collections.getColumnModel().getColumn(3).setResizable(false);
+        collections.getColumnModel().getColumn(2).setResizable(false);
+        collections.getColumnModel().getColumn(1).setResizable(false);
+        collections.getColumnModel().getColumn(0).setResizable(false);
         dlm.clear();
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("Remove"));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("AddPerson"));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("AddInJson"));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("hust"));
+        dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("Filter"));
     }
     private static void languageChooser(){
         language.setLayout(null);
@@ -134,6 +140,16 @@ public class Interface{
         language.setVisible(true);
 
     }
+    private static void sort(){
+        List<NormalHuman> c = coll.stream().sorted().collect(Collectors.toList());
+        coll.clear();
+        coll.addAll(c);
+        collt.removeAll();
+        for(int i=0;i<coll.size();i++){
+            String[] obj = {coll.get(i).getName(),coll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(coll.get(i).getTroublesWithTheLaw().toString()),coll.get(i).getTimeOfCreate().format(formatter)};
+            collt.addData(obj);
+        }
+    }
     private static void colorChooser(){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -158,6 +174,7 @@ public class Interface{
                         showThoughtsButton.setBackground(color);
                         editButton.setBackground(color);
                         deleteButton.setBackground(color);
+                        sortButton.setBackground(color);
                         colorChooserButton.setBackground(color);
                         listCommands.setForeground(color);
                         doButton.setBackground(color);
@@ -206,10 +223,6 @@ public class Interface{
             collt.addData(obj);
         }
         collections.setForeground(Color.BLACK);
-        collections.getColumnModel().getColumn(0).setMinWidth(250);
-        collections.getColumnModel().getColumn(1).setMinWidth(100);
-        collections.getColumnModel().getColumn(2).setMinWidth(100);
-        collections.getColumnModel().getColumn(3).setMinWidth(100);
         collections.getColumnModel().getColumn(3).setResizable(false);
         collections.getColumnModel().getColumn(2).setResizable(false);
         collections.getColumnModel().getColumn(1).setResizable(false);
@@ -254,6 +267,7 @@ public class Interface{
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("AddPerson"));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("AddInJson"));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("hust"));
+        dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("Filter"));
         listCommands.setFont(new Font("Verdana", Font.PLAIN, 12));
         listCommands.setForeground(Color.BLUE);
         listCommands.setBackground(Color.white);
@@ -282,9 +296,18 @@ public class Interface{
 
         jf.add(panelc);
         colorChooserButton.setFont(new Font("Verdana", Font.BOLD,15));
+        sortButton.setFont(new Font("Verdana", Font.BOLD,15));
+        sortButton.setLocation(0,50);
+        sortButton.setSize(140,40);
         languageChooserButton.setFont(new Font("Verdana", Font.BOLD,15));
-        languageChooserButton.setSize(200,40);
-        languageChooserButton.setLocation(300,50);
+        languageChooserButton.setSize(270,40);
+        languageChooserButton.setLocation(330,50);
+        sortButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sort();
+            }
+        });
         colorChooserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -295,10 +318,11 @@ public class Interface{
             @Override
             public void actionPerformed(ActionEvent e) {languageChooser();}
         });
-        colorChooserButton.setSize(150,40);
-        colorChooserButton.setLocation(110,50);
+        colorChooserButton.setSize(200,40);
+        colorChooserButton.setLocation(130,50);
         paneld.add(colorChooserButton);
         paneld.add(languageChooserButton);
+        paneld.add(sortButton);
         jf.add(paneld);
         jf.setVisible(true);
     }

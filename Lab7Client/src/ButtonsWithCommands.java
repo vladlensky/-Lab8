@@ -28,6 +28,7 @@ public class ButtonsWithCommands {
     private boolean openedAddJsonWindow=false;
     private boolean openedAddWindow=false;
     private boolean openedHustWindow=false;
+    private boolean openedFilterWindow=false;
     private JFrame jf = new JFrame();
     private JList<String> listCommands;
     private LinkedList<NormalHuman> coll;
@@ -74,7 +75,108 @@ public class ButtonsWithCommands {
                 break;
             case 3: hust();
                 break;
+            case 4: filter();
         }
+    }
+    public void filter(){
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    JDialog language = new JDialog();
+                    language.setModal(true);
+                    JButton ok = new JButton(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Ok"));
+                    JButton cancel = new JButton(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Reset"));
+                    language.setLayout(null);
+                    language.setForeground(Color.white);
+                    language.setResizable(false);
+                    language.setAutoRequestFocus(true);
+                    language.setLocation(600,250);
+                    language.setSize(400,200);
+                    ok.setLocation(28,120);
+                    cancel.setLocation(250,120);
+                    ok.setSize(100,30);
+                    cancel.setSize(100,30);
+                    JCheckBox rus = new JCheckBox(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Name"));
+                    JCheckBox isl = new JCheckBox(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Age"));
+                    JCheckBox isp = new JCheckBox(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("TroublesWithTheLaw"));
+                    JCheckBox grec = new JCheckBox(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Time"));
+                    //
+                    JRadioButton fl = new JRadioButton(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("false"));
+                    JRadioButton tr = new JRadioButton(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("true"));
+                    JTextField name = new JTextField(20);
+                    name.setSize(180,20);
+                    name.setLocation(200,15);
+                    SpinnerNumberModel snm = new SpinnerNumberModel(1,1,100,1);
+                    SpinnerNumberModel snm1 = new SpinnerNumberModel(1,1,100,1);
+                    JSpinner spin = new JSpinner(snm);
+                    spin.setSize(70,20);
+                    JSpinner spin1 = new JSpinner(snm1);
+                    spin1.setSize(70,20);
+                    spin.setLocation(200,38);
+                    spin1.setLocation(300,38);
+                    JTextField date = new JTextField(20);
+                    date.setSize(70,20);
+                    date.setLocation(200,90);
+                    JTextField time = new JTextField(20);
+                    time.setSize(70,20);
+                    time.setLocation(300,90);
+                    //
+                    fl.setSelected(true);
+                    ButtonGroup gr = new ButtonGroup();
+                    fl.setSize(80,20);
+                    tr.setSize(80,20);
+                    gr.add(fl);
+                    gr.add(tr);
+                    fl.setLocation(200,62);
+                    tr.setLocation(300,62);
+                    rus.setFont(new Font("Verdana", Font.PLAIN, 12));
+                    isl.setFont(new Font("Verdana", Font.PLAIN, 12));
+                    grec.setFont(new Font("Verdana", Font.PLAIN, 12));
+                    isp.setFont(new Font("Verdana", Font.PLAIN, 12));
+                    rus.setSize(80, 30);
+                    isl.setSize(180, 30);
+                    grec.setSize(180, 30);
+                    isp.setSize(180, 30);
+                    rus.setLocation(10, 10);
+                    isl.setLocation(10, 35);
+                    isp.setLocation(10, 60);
+                    grec.setLocation(10, 85);
+                    ok.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(rus.isSelected())
+                                ;
+                            if(isl.isSelected())
+                                ;
+                            if(isp.isSelected())
+                                ;
+                            if(grec.isSelected())
+                                ;
+                        }
+                    });
+                    cancel.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            ;
+                        }
+                    });
+                    language.add(date);
+                    language.add(time);
+                    language.add(spin);
+                    language.add(spin1);
+                    language.add(name);
+                    language.add(fl);
+                    language.add(tr);
+                    language.add(ok);
+                    language.add(cancel);
+                    language.add(rus);
+                    language.add(isl);
+                    language.add(isp);
+                    language.add(grec);
+                    //
+                    language.setVisible(true);
+                }
+            });
     }
     public void remove(){
         if(!openedRemoveWindow)

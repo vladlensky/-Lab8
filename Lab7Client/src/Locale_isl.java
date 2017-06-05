@@ -7,7 +7,7 @@ public class Locale_isl extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
-                {"DateTime","dd//MM//yyyy hh:mm:ss"},
+                {"DateTime","dd/MM/yyyy hh:mm:ss"},
                 { "true", "Já"},
                 { "false",   "enga"},
                 { "Delete",  "Til að fjarlægja"},
@@ -41,7 +41,10 @@ public class Locale_isl extends ListResourceBundle {
                 {"WrongNormalHuman","Ranga manneskju!"},
                 {"NoNormalHumanLikeThis","Það er engin slík manneskja!"},
                 {"Нет подключения!Сервер отключён!","Engin tenging! Þjónninn er niður!"},
-                {"Time","Sköpun tíma"}
+                {"Time","Sköpun tíma"},
+                {"Sort","Konar"},
+                {"Filter","Sía"},
+                {"Reset","Endurstilla"}
         };
     }
 }

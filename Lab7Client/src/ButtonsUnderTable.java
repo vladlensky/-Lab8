@@ -92,6 +92,7 @@ public class ButtonsUnderTable {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
+                    jf = new JFrame(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("ShowThoughts"));
                     jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                     jf.setResizable(false);
                     jf.setSize(new Dimension(400,200));

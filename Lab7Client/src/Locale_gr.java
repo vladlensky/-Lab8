@@ -7,7 +7,7 @@ public class Locale_gr extends ListResourceBundle {
     @Override
     protected Object[][] getContents() {
         return new Object[][]{
-                {"DateTime","dd//MM//yyyy hh:mm:ss"},
+                {"DateTime","dd/MM/yyyy hh:mm:ss"},
                 { "true", "ναι"},
                 { "false",   "όχι"},
                 { "Delete",  "Διαγραφή"},
@@ -41,7 +41,10 @@ public class Locale_gr extends ListResourceBundle {
                 {"WrongNormalHuman","Λάθος άνθρωπος!"},
                 {"NoNormalHumanLikeThis","Δεν υπάρχει τέτοιο άτομο!"},
                 {"Нет подключения!Сервер отключён!","Δεν υπάρχει σύνδεση! Ο διακομιστής είναι!"},
-                {"Time","Ώρα δημιουργίας"}
+                {"Time","Ώρα δημιουργίας"},
+                {"Sort","Είδος"},
+                {"Filter","Φίλτρο"},
+                {"Reset","Επαναφορά"}
         };
     }
 }
