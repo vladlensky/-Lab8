@@ -1,59 +1,35 @@
 package classes;
-
-/**
- * Created by Mugenor on 23.02.2017.
- */
+import myAnnotations.*;
 
 import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.*;
 import java.util.ArrayList;
 
+@Table(name="normalhuman")
 public class NormalHuman extends Human implements Comparable<NormalHuman>{
-    protected ZonedDateTime timeOfCreate = ZonedDateTime.now();
+    @Column(name="timeOfCreate")
+    @DateTime
+    protected ZonedDateTime timeOfCreate;
+    @Column(name="age")
     protected Long age=1l;
+    @Property(type="classes.Thoughts" , refColumn = "id")
     protected ArrayList<Thoughts> thoughts;
     public NormalHuman(String name) throws KarlsonNameException{
         super(name);
         this.thoughts = new ArrayList<Thoughts>();
-        timeOfCreate = ZonedDateTime.now();
-        SimpleDateFormat f = new SimpleDateFormat("yyyy mm dd hh mm ss");
-        f.format(timeOfCreate);
+        Instant time = Instant.now();
+        timeOfCreate = ZonedDateTime.ofInstant(time, ZoneOffset.UTC);
     }
-    public ZonedDateTime getTimeOfCreate(){return timeOfCreate;}
-    public void setTimeOfCreate() {timeOfCreate = ZonedDateTime.now();}
     public NormalHuman(){
         super();
         this.thoughts = new ArrayList<Thoughts>();
-        timeOfCreate = ZonedDateTime.now();
+        Instant time = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        timeOfCreate = ZonedDateTime.ofInstant(time, ZoneOffset.UTC);
+        System.out.println(timeOfCreate);
+        System.out.println(time);
     }
-    public class Thoughts implements Thinkable {
-        protected String thought;
-        public Thoughts(){}
-        public void setThought(String th){thought=th;}
-        public String getThougth(){return thought;}
-        public void thinkAbout(String th){
-            thought=th;
-        }
-        public void thinkAbout(Thinkable th){
-            thought=th.toString();
-        }
-        public void forgetIt(){
-            this.thought=null;
-        }
-        public boolean equals(Object th) {
-            if (this == th) return true;
-            if (th == null || !(th instanceof Thoughts)) return false;
-            Thoughts thoughts = (Thoughts) th;
-            return thought.equals(thoughts.thought);
-        }
-        public int hashCode() {
-            return thought != null ? thought.hashCode() : 0;
-        }
-        public String toString(){
-            return this.thought;
-        }
-    }
+    public ZonedDateTime getTimeOfCreate(){return timeOfCreate;}
+    public void setTimeOfCreate() {timeOfCreate = ZonedDateTime.now();}
     public String getThoughts(int i) {
         if (i <= thoughts.size() && i >= 0) {
             return thoughts.get(i).toString();
@@ -95,13 +71,6 @@ public class NormalHuman extends Human implements Comparable<NormalHuman>{
     public ArrayList getAllThoughts(){
         return thoughts;
     }
-    public boolean equals(Object nh) {
-        if (this == nh) return true;
-        if (nh == null || !(nh instanceof NormalHuman)) return false;
-        if(!super.equals(nh)) return false;
-        NormalHuman normalHuman = (NormalHuman) nh;
-        return thoughts.equals(normalHuman.getAllThoughts()) && age.equals(normalHuman.getAge());
-    }
     public int hashCode() {
         int r = super.hashCode();
         r = 31*r+ thoughts.hashCode();
@@ -115,5 +84,8 @@ public class NormalHuman extends Human implements Comparable<NormalHuman>{
     public int countOfThoughts(){return thoughts.size();}
     public int compareTo(NormalHuman nh){
         return super.name.length()-nh.getName().length()+countOfThoughts()-nh.countOfThoughts()+(troublesWithTheLaw ? 10: -10) - (nh.getTroublesWithTheLaw() ? 10: -10);
+    }
+    public boolean equals(Object nh){
+        return super.equals(nh);
     }
 }

@@ -44,7 +44,10 @@ public class Locale_gr extends ListResourceBundle {
                 {"Time","Ώρα δημιουργίας"},
                 {"Sort","Είδος"},
                 {"Filter","Φίλτρο"},
-                {"Reset","Επαναφορά"}
+                {"Reset","Επαναφορά"},
+                {"Date","dd/MM/yyyy"},
+                {"time","hh:mm:ss"},
+                {"ErrorDateTime","Λάθος κωδικός χρόνου/ημερομηνίας!"}
         };
     }
 }

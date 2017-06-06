@@ -44,7 +44,11 @@ public class Locale_isl extends ListResourceBundle {
                 {"Time","Sköpun tíma"},
                 {"Sort","Konar"},
                 {"Filter","Sía"},
-                {"Reset","Endurstilla"}
+                {"Reset","Endurstilla"},
+                {"Date","dd/MM/yyyy"},
+                {"time","hh:mm:ss"},
+                {"ErrorDateTime","Úrskeiðis komu tíma/hingað!"}
+
         };
     }
 }

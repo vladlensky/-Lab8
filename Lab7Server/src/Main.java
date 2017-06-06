@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -8,12 +7,8 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.sql.*;
 import java.util.*;
-import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import classes.NormalHuman;
-import org.postgresql.ds.*;
 import javax.sql.rowset.CachedRowSet;
 
 /**
@@ -23,7 +18,8 @@ public class Main {
     private static final String url = "jdbc:postgresql://localhost:2345/lab7";
     private static final String username="postgres";
     private static final String password="123";
-    private static final int serverPort=7000;
+    private static final String IPv4 = "172.22.0.8";
+    private static final int serverPort=23500;
     private static InetAddress host;
     private static DataBaseCommunication dbc;
     private static Selector selector;
@@ -31,8 +27,6 @@ public class Main {
     static SecondThreadHandler threadHandler;
     static ServerSocket secondServerSocket;
     static int maxID=-1;
-    static CachedRowSet normalHumans;
-    static CachedRowSet thoughts;
     static volatile boolean exc=false;
     public static DataBaseCommunication getDbc(){
         return dbc;
@@ -42,7 +36,7 @@ public class Main {
         try {
             //Определение хоста
             host=InetAddress.getLocalHost();
-            System.out.println("Адрес хоста: " + host.getHostAddress());
+            System.out.println("Адрес хоста: " + IPv4);
         }catch (UnknownHostException e){
             e.printStackTrace();
         }
@@ -69,19 +63,18 @@ public class Main {
         try {
             server = ServerSocketChannel.open();
             server.configureBlocking(false);
-            server.socket().bind(new InetSocketAddress("192.168.1.222", serverPort));
+            server.socket().bind(new InetSocketAddress(IPv4, serverPort));
             serverKey = server.register(selector, SelectionKey.OP_ACCEPT);
             secondServerSocket = new ServerSocket();
-            secondServerSocket.bind(new InetSocketAddress("192.168.1.222", serverPort+1));
+            secondServerSocket.bind(new InetSocketAddress(IPv4, serverPort+1));
         }catch (IOException e){
             System.out.println("Ошибка: Не удаётся открыть канал сервера");
             System.exit(1);
         }catch (Exception e){
             e.printStackTrace();
-        }
+        };
         try{
-           normalHumans = dbc.registerQueryAndGetRowSet("select * from normalhuman;");
-           thoughts = dbc.registerQueryAndGetRowSet("select * from thoughts;");
+            CachedRowSet normalHumans = dbc.registerQueryAndGetRowSet("select * from normalhuman;");
             while(normalHumans.next()){
                 int id = normalHumans.getInt("id");
                 if(id>maxID)maxID=id;
@@ -92,14 +85,13 @@ public class Main {
             e.printStackTrace();
             return;
         }
+
         threadHandler = new SecondThreadHandler();
         ExecutorService executor = Executors.newFixedThreadPool(10);
         Runtime.getRuntime().addShutdownHook(new Thread(){
             public void run(){
                 try {
                     selector.close();
-                    normalHumans.close();
-                    thoughts.close();
                     executor.shutdown();
                 }catch(Exception e){
                     e.printStackTrace();
@@ -124,8 +116,7 @@ public class Main {
                             newChannel.configureBlocking(false);
                             SelectionKey newKey = newChannel.register(selector, SelectionKey.OP_READ);
                             //Создание отдельного потока для пользователя и связывание его с ключом
-                            SecondConnection secondConnection = new SecondConnection();
-                            secondConnection.connect(secondServerSocket.accept());
+                            SecondConnection secondConnection = new SecondConnection(secondServerSocket.accept());
                             synchronized (threadHandler) {
                                 threadHandler.addConnection(secondConnection);
                             }

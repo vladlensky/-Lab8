@@ -3,8 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
+import java.net.SocketException;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.io.*;
@@ -13,17 +13,21 @@ import java.util.stream.Collectors;
 
 import classes.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.simple.*;
 public class Interface{
     static HashSet<Integer> notEditable;
     static Socket secondSocket;
-    static DataOutputStream dos;
-    static DataInputStream dis;
+    static ObjectOutputStream dos;
+    static ObjectInputStream dis;
     static Socket socket;
     static InputStream socketIS;
     static OutputStream socketOS;
     static Message message;
     static Gson gson;
+    static ByteArrayOutputStream baos;
+    static ByteArrayInputStream bais;
+    private static SelectedLanguage selected = new SelectedLanguage();
     private static boolean isChanged = false;
     private static JFrame jf = new JFrame();
     private static JPanel panelu = new JPanel();
@@ -43,6 +47,7 @@ public class Interface{
     private static JButton languageChooserButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("ChooseLanguage"));
     private static JButton sortButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("Sort"));
     static LinkedList<NormalHuman> coll =null;
+    static LinkedList<NormalHuman> filtercoll;
     private static DefaultListModel<String> dlm= new DefaultListModel<>();
     private static JList<String> listCommands = new JList<>(dlm);
     private static JButton doButton = new JButton(ResourceBundle.getBundle("Locale",locale).getString("Do"));
@@ -50,6 +55,7 @@ public class Interface{
     static JTable collections = new JTable(collt);
     private static ButtonsUnderTable but=null;
     private static ButtonsWithCommands bwc=null;
+    private static MyPlayer sound = new MyPlayer(new File(System.getenv("Source") + "\\wel_rus.wav"));
     private static JButton cb = new JButton(ResourceBundle.getBundle("Locale",locale).getString("ChooseColor"));
     private static CloseFrame cf = new CloseFrame(bwc);
     public static void setIsChanged(boolean changed){isChanged = changed;}
@@ -59,6 +65,91 @@ public class Interface{
     public static DateTimeFormatter getFormatter() {return formatter;}
     public static void setFormatter(DateTimeFormatter formatter) {Interface.formatter = formatter;}
     public static Locale getLocale() {return locale;}
+    public static void resetFilter(){
+        collt.removeAll();
+        filtercoll.clear();
+        filtercoll.addAll(coll);
+        for(int i=0;i<filtercoll.size();i++){
+            String[] obj = {filtercoll.get(i).getName(),filtercoll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(filtercoll.get(i).getTroublesWithTheLaw().toString()),filtercoll.get(i).getTimeOfCreate().format(formatter)};
+            collt.addData(obj);
+        }
+    }
+    public static void setFilterName(String name){
+        LinkedList<NormalHuman> tem = new LinkedList<>();
+        tem.addAll(filtercoll);
+        filtercoll.clear();
+        filtercoll.addAll(tem.stream().filter(normalHuman -> normalHuman.getName().contains(name)).collect(Collectors.toList()));
+        collt.removeAll();
+        for(int i=0;i<filtercoll.size();i++){
+            String[] obj = {filtercoll.get(i).getName(),filtercoll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(filtercoll.get(i).getTroublesWithTheLaw().toString()),filtercoll.get(i).getTimeOfCreate().format(formatter)};
+            collt.addData(obj);
+        }
+    }
+    public static void setFilterAge(int min,int max){
+        if(min > max){
+            int temp = min;
+            min = max;
+            max = temp;
+        }
+        final int mins = min;
+        final int maxs = max;
+            LinkedList<NormalHuman> tem = new LinkedList<>();
+            tem.addAll(filtercoll);
+            filtercoll.clear();
+            filtercoll.addAll(tem.stream().filter(normalHuman -> normalHuman.getAge() >= mins && normalHuman.getAge() <= maxs).collect(Collectors.toList()));
+            collt.removeAll();
+        for(int i=0;i<filtercoll.size();i++){
+            String[] obj = {filtercoll.get(i).getName(),filtercoll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(filtercoll.get(i).getTroublesWithTheLaw().toString()),filtercoll.get(i).getTimeOfCreate().format(formatter)};
+            collt.addData(obj);
+        }
+    }
+    public static void setFilterTime(String date,String time){
+        try {
+            char[] a = date.toCharArray();
+            String d1 = "" + a[0] + a[1];
+            final Integer i0 = Integer.parseInt(d1);
+            String d2 = "" + a[3] + a[4];
+            final Integer i1 = Integer.parseInt(d2);
+            String d3 = "" + a[6] + a[7] + a[8] + a[9];
+            final Integer i2 = Integer.parseInt(d3);
+            LocalDate dat = LocalDate.of(i2, i1, i0);
+            System.out.println(dat);
+            a = time.toCharArray();
+            d1 = "" + a[0] + a[1];
+            final Integer j0 = Integer.parseInt(d1);
+            d2 = "" + a[3] + a[4];
+            final Integer j1 = Integer.parseInt(d2);
+            d3 = "" + a[6] + a[7];
+            final Integer j2 = Integer.parseInt(d3);
+            LocalTime tim = LocalTime.of(j0+12, j1, j2);
+            System.out.println(tim);
+            ZonedDateTime t = ZonedDateTime.of(dat, tim, ZoneOffset.UTC);
+            System.out.println(t);
+            LinkedList<NormalHuman> tem = new LinkedList<>();
+            tem.addAll(filtercoll);
+            filtercoll.clear();
+            filtercoll.addAll(tem.stream().filter(normalHuman -> {
+                return normalHuman.getTimeOfCreate().equals(t);}).collect(Collectors.toList()));
+            collt.removeAll();
+            for (int i = 0; i < filtercoll.size(); i++) {
+                String[] obj = {filtercoll.get(i).getName(), filtercoll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(filtercoll.get(i).getTroublesWithTheLaw().toString()), filtercoll.get(i).getTimeOfCreate().format(formatter)};
+                collt.addData(obj);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            new Dialog("ErrorDateTime",color);}
+    }
+    public static void setFilterTroublesWithTheLaw(boolean troublesWithTheLaw){
+            LinkedList<NormalHuman> tem = new LinkedList<>();
+            tem.addAll(filtercoll);
+            filtercoll.clear();
+            filtercoll.addAll(tem.stream().filter(normalHuman -> normalHuman.getTroublesWithTheLaw() == troublesWithTheLaw).collect(Collectors.toList()));
+        collt.removeAll();
+        for(int i=0;i<filtercoll.size();i++){
+            String[] obj = {filtercoll.get(i).getName(),filtercoll.get(i).getAge().toString(), ResourceBundle.getBundle("Locale", Interface.getLocale()).getString(filtercoll.get(i).getTroublesWithTheLaw().toString()),filtercoll.get(i).getTimeOfCreate().format(formatter)};
+            collt.addData(obj);
+        }
+    }
     public static void setLocale(Locale locale) {
         Interface.locale = locale;
         cb.setText(ResourceBundle.getBundle("Locale",locale).getString("ChooseColor"));
@@ -121,14 +212,70 @@ public class Interface{
         ok.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(rus.isSelected())
-                    setLocale(new Locale("ru"));
-                if(isl.isSelected())
-                    setLocale(new Locale("isl"));
-                if(isp.isSelected())
-                    setLocale(new Locale("isp"));
-                if(grec.isSelected())
-                    setLocale(new Locale("gr"));
+                if (rus.isSelected()) {
+                    if (selected.selected != 1) {
+                        selected.selected = 1;
+                        sound.stop();
+                        try {
+                            sound.close();
+                        } catch (Exception exc) {
+                            exc.printStackTrace();
+                        }
+                        sound = new MyPlayer(new File(System.getenv("Source") + "\\wel_rus.wav"));
+                        if (sound.isReleased()) {
+                            sound.play();
+                        }
+                        setLocale(new Locale("ru"));
+                    }
+                }
+                if (isl.isSelected()) {
+                    if (selected.selected != 2) {
+                        selected.selected = 2;
+                        sound.stop();
+                        try {
+                            sound.close();
+                        } catch (Exception exc) {
+                            exc.printStackTrace();
+                        }
+                        sound = new MyPlayer(new File(System.getenv("Source") + "\\wel_isl.wav"));
+                        if (sound.isReleased()) {
+                            sound.play();
+                        }
+                        setLocale(new Locale("isl"));
+                    }
+                }
+                if (isp.isSelected()) {
+                    if (selected.selected != 3) {
+                        selected.selected = 3;
+                        sound.stop();
+                        try {
+                            sound.close();
+                        } catch (Exception exc) {
+                            exc.printStackTrace();
+                        }
+                        sound = new MyPlayer(new File(System.getenv("Source") + "\\wel_isp.wav"));
+                        if (sound.isReleased()) {
+                            sound.play();
+                        }
+                        setLocale(new Locale("isp"));
+                    }
+                }
+                if (grec.isSelected()) {
+                    if (selected.selected != 4) {
+                        selected.selected = 4;
+                        sound.stop();
+                        try {
+                            sound.close();
+                        } catch (Exception exc) {
+                            exc.printStackTrace();
+                        }
+                        sound = new MyPlayer(new File(System.getenv("Source") + "\\wel_gr.wav"));
+                        if (sound.isReleased()) {
+                            sound.play();
+                        }
+                        setLocale(new Locale("gr"));
+                    }
+                }
             }
         });
         language.add(ok);
@@ -154,50 +301,16 @@ public class Interface{
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                colorFrame = new JFrame(ResourceBundle.getBundle("Locale",locale).getString("ChooseColor"));
-                colorFrame.setAutoRequestFocus(true);
-                colorFrame.setSize(new Dimension(700,400));
-                colorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                colorFrame.setLocationRelativeTo(null);
-                colorFrame.setLayout(new GridBagLayout());
-                JColorChooser cc = new JColorChooser();
-                colorFrame.add(cc, new GridBagConstraints(
-                        0,0,3,1,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH,
-                        new Insets(0,0,0,0),0,0));
-                cb.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        colorFrame.dispose();
-                        color=cc.getColor();
-                        cb.setBackground(color);
-                        ok.setBackground(color);
-                        showThoughtsButton.setBackground(color);
-                        editButton.setBackground(color);
-                        deleteButton.setBackground(color);
-                        sortButton.setBackground(color);
-                        colorChooserButton.setBackground(color);
-                        listCommands.setForeground(color);
-                        doButton.setBackground(color);
-                        collections.setForeground(color);
-                        but.setColor(color);
-                        bwc.setColor(color);
-                        cf.setColor(color);
-                        languageChooserButton.setBackground(color);
-                    }
-                });
-                colorFrame.add(cb, new GridBagConstraints(
-                        2,1,1,1, 1,1, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL,
-                        new Insets(0,0,0,0), 0, 0));
                 colorFrame.setVisible(true);
             }
         });
     }
     Interface(){
-        but =  new ButtonsUnderTable(collections, collt, coll);
-        bwc = new ButtonsWithCommands(listCommands, coll, collt, collections);
-        showThoughtsButton.setFont(new Font("Verdana", Font.BOLD,13));
-        editButton.setFont(new Font("Verdana", Font.BOLD,13));
-        deleteButton.setFont(new Font("Verdana", Font.BOLD,13));
+        but =  new ButtonsUnderTable(collections, collt, filtercoll);
+        bwc = new ButtonsWithCommands(listCommands, filtercoll, collt, collections);
+        showThoughtsButton.setFont(new Font("Verdana", Font.PLAIN,13));
+        editButton.setFont(new Font("Verdana", Font.PLAIN,13));
+        deleteButton.setFont(new Font("Verdana", Font.PLAIN,13));
         jf.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         jf.setResizable(false);
         jf.setSize(new Dimension(600,400));
@@ -211,6 +324,11 @@ public class Interface{
             public void windowClosing(WindowEvent e) {
                 message.clearData();
                 message.setState(ConnectionState.DISCONNECT);
+                int editID = but.isOpenedEditWindow();
+                if(editID!=-10) {
+                    notEditable.remove(editID);
+                }
+                message.reinitialize(notEditable);
                 sendMessage();
                 System.exit(0);
             }
@@ -262,7 +380,7 @@ public class Interface{
                 if(e.getClickCount()==2 && e.getButton()==MouseEvent.BUTTON1) but.edit();
             }
         });
-        doButton.setFont(new Font("Verdana", Font.BOLD, 14));
+        doButton.setFont(new Font("Verdana", Font.PLAIN, 14));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("Remove"));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("AddPerson"));
         dlm.addElement(ResourceBundle.getBundle("Locale",locale).getString("AddInJson"));
@@ -283,23 +401,23 @@ public class Interface{
 
         panelc.setLayout(new GridBagLayout());
         panelc.add(deleteButton,new GridBagConstraints(2, 0, 1, 1, 1, 1,
-                GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,150), 0,0));
+                GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,100), 0,0));
         panelc.add(showThoughtsButton,
                 new GridBagConstraints(0, 0, 1, 1, 1, 1,
-                        GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,150,0,0), 0,0));
+                        GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,100,0,0), 0,0));
         panelc.add(editButton,new GridBagConstraints(1, 0, 1, 1, 1, 1,
                 GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0,0));
         panelc.add(doButton, new GridBagConstraints(0,1,1,2,1,1, GridBagConstraints.EAST, GridBagConstraints.HORIZONTAL
-                ,new Insets(0,200,0,0), 0,0));
+                ,new Insets(0,100,0,0), 0,0));
         panelc.add(listCommands, new GridBagConstraints(1,1,2,2,1,1, GridBagConstraints.CENTER,
                 GridBagConstraints.VERTICAL, new Insets(0,0,0,200), 0, 0));
 
         jf.add(panelc);
-        colorChooserButton.setFont(new Font("Verdana", Font.BOLD,15));
-        sortButton.setFont(new Font("Verdana", Font.BOLD,15));
+        colorChooserButton.setFont(new Font("Verdana", Font.PLAIN,15));
+        sortButton.setFont(new Font("Verdana", Font.PLAIN,15));
         sortButton.setLocation(0,50);
         sortButton.setSize(140,40);
-        languageChooserButton.setFont(new Font("Verdana", Font.BOLD,15));
+        languageChooserButton.setFont(new Font("Verdana", Font.PLAIN,15));
         languageChooserButton.setSize(270,40);
         languageChooserButton.setLocation(330,50);
         sortButton.addActionListener(new ActionListener() {
@@ -324,7 +442,43 @@ public class Interface{
         paneld.add(languageChooserButton);
         paneld.add(sortButton);
         jf.add(paneld);
+        colorFrame.setAutoRequestFocus(true);
+        colorFrame.setSize(new Dimension(700,400));
+        colorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        colorFrame.setLocationRelativeTo(null);
+        colorFrame.setLayout(new GridBagLayout());
+        JColorChooser cc = new JColorChooser();
+        colorFrame.add(cc, new GridBagConstraints(
+                0,0,3,1,1,1,GridBagConstraints.CENTER,GridBagConstraints.BOTH,
+                new Insets(0,0,0,0),0,0));
+        cb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Пробую поменять цвет");
+                color=cc.getColor();
+                System.out.println(color);
+                cb.setBackground(color);
+                ok.setBackground(color);
+                showThoughtsButton.setBackground(color);
+                editButton.setBackground(color);
+                deleteButton.setBackground(color);
+                sortButton.setBackground(color);
+                colorChooserButton.setBackground(color);
+                listCommands.setForeground(color);
+                doButton.setBackground(color);
+                collections.setForeground(color);
+                but.setColor(color);
+                bwc.setColor(color);
+                cf.setColor(color);
+                languageChooserButton.setBackground(color);
+                colorFrame.dispose();
+            }
+        });
+        colorFrame.add(cb, new GridBagConstraints(
+                2,1,1,1, 1,1, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL,
+                new Insets(0,0,0,0), 0, 0));
         jf.setVisible(true);
+        sound.play();
     }
 
     public static LinkedList<String> fromFileToString(String path) throws FileNotFoundException, SecurityException, IOException{
@@ -417,39 +571,45 @@ public class Interface{
 
     public static void getMessage(){
         try {
-            StringBuilder mesIn = new StringBuilder();
-            mesIn.append((char) dis.read());
-            while (dis.available() != 0) {
-                mesIn.append((char) dis.read());
-            }
-            message = gson.fromJson(mesIn.toString(), Message.class);
-        }catch (IOException e){
+            int size = socketIS.read();
+            byte[] mes = new byte[size*512];
+            socketIS.read(mes);
+            bais = new ByteArrayInputStream(mes);
+            dis = new ObjectInputStream(bais);
+            message = (Message) dis.readObject();
+            bais.close();
+            dis.close();
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     public static void sendMessage(){
         try {
-            String mesOut = gson.toJson(message);
-            byte sizeOut = (byte) Math.ceil((double) (mesOut.getBytes().length + 1) / (double) 512);
-            byte[] buf = new byte[mesOut.getBytes().length + 1];
-            buf[0] = sizeOut;
-            buf[0] = sizeOut;
-            System.arraycopy(mesOut.getBytes(), 0, buf, 1, mesOut.getBytes().length);
-            dos.write(buf);
+            baos = new ByteArrayOutputStream();
+            dos = new ObjectOutputStream(baos);
+            dos.writeObject(message);
+            baos.flush();
+            dos.flush();
+            System.out.println(message.getState());
+            socketOS.write((int)Math.ceil((double)baos.size()/(double)512));
+            socketOS.write(baos.toByteArray());
+            socketOS.flush();
+            baos.reset();
+            dos.reset();
         }catch (IOException e){
 
         }
     }
     public static void main(String[] args){
         try {
-            gson = new Gson();
-            socket = new Socket("192.168.1.222", 7000);
-            secondSocket = new Socket("192.168.1.222", 7001);
+            gson = new GsonBuilder().addDeserializationExclusionStrategy(new GsonDeserializeExclusion()).create();
+            socket = new Socket("172.22.0.8", 23500);
+            secondSocket = new Socket("172.22.0.8", 23501);
             socketOS = socket.getOutputStream();
             socketIS = socket.getInputStream();
-            dis = new DataInputStream(socketIS);
-            dos = new DataOutputStream(socketOS);
+            baos = new ByteArrayOutputStream();
+            dos = new ObjectOutputStream(baos);
             message = new Message(ConnectionState.NEED_DATA);
             message.maxID=-10;
             message.clearData();
@@ -457,12 +617,13 @@ public class Interface{
             getMessage();
             notEditable = message.getNotEditable();
             coll = new LinkedList<>(message.getData());
+            filtercoll = new LinkedList<>(coll);
             new AnotherConnection(secondSocket, coll, collt).start();
             SwingUtilities.invokeLater(() -> new Interface());
-        }catch(ConnectException e){
-            new Dialog("Нет подключения!Сервер отключён!",Interface.getColor());
+        }catch(ConnectException e) {
+            new Dialog("Нет подключения!Сервер отключён!", Interface.getColor());
             System.exit(1);
-        }catch(Exception e){
+        } catch(Exception e){
             e.printStackTrace();
         }
     }

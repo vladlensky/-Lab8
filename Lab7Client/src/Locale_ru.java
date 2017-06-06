@@ -47,7 +47,10 @@ public class Locale_ru extends ListResourceBundle {
                 {"Time","Время создания"},
                 {"Sort","Сортировка"},
                 {"Filter","Фильтр"},
-                {"Reset","Сброс"}
+                {"Reset","Сброс"},
+                {"Date","dd.MM.yyyy"},
+                {"time","hh:mm:ss"},
+                {"ErrorDateTime","Неправильный ввод времени/даты!"}
 
         };
     }

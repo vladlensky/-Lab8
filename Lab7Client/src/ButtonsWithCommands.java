@@ -93,9 +93,9 @@ public class ButtonsWithCommands {
                     language.setLocation(600,250);
                     language.setSize(400,200);
                     ok.setLocation(28,120);
-                    cancel.setLocation(250,120);
+                    cancel.setLocation(230,120);
                     ok.setSize(100,30);
-                    cancel.setSize(100,30);
+                    cancel.setSize(130,30);
                     JCheckBox rus = new JCheckBox(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Name"));
                     JCheckBox isl = new JCheckBox(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Age"));
                     JCheckBox isp = new JCheckBox(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("TroublesWithTheLaw"));
@@ -117,9 +117,12 @@ public class ButtonsWithCommands {
                     JTextField date = new JTextField(20);
                     date.setSize(70,20);
                     date.setLocation(200,90);
+                    date.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("Date"));
                     JTextField time = new JTextField(20);
                     time.setSize(70,20);
                     time.setLocation(300,90);
+                    String s = spin.getValue().toString();
+                    time.setText(ResourceBundle.getBundle("Locale", Interface.getLocale()).getString("time"));
                     //
                     fl.setSelected(true);
                     ButtonGroup gr = new ButtonGroup();
@@ -145,19 +148,23 @@ public class ButtonsWithCommands {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             if(rus.isSelected())
-                                ;
+                                Interface.setFilterName(name.getText());
                             if(isl.isSelected())
-                                ;
-                            if(isp.isSelected())
-                                ;
+                                Interface.setFilterAge(snm.getNumber().intValue(),snm1.getNumber().intValue());
+                            if(isp.isSelected()) {
+                                if (fl.isSelected())
+                                    Interface.setFilterTroublesWithTheLaw(false);
+                                else
+                                    Interface.setFilterTroublesWithTheLaw(true);
+                            }
                             if(grec.isSelected())
-                                ;
+                                Interface.setFilterTime(date.getText(),time.getText());
                         }
                     });
                     cancel.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            ;
+                            Interface.resetFilter();
                         }
                     });
                     language.add(date);

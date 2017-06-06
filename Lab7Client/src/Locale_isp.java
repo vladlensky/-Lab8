@@ -44,7 +44,11 @@ public class Locale_isp extends ListResourceBundle {
                 {"Time","El tiempo de la creación"},
                 {"Sort","Tipo"},
                 {"Filter","El filtro"},
-                {"Reset","Restablecer"}
+                {"Reset","Restablecer"},
+                {"Date","dd/MM/yyyy"},
+                {"time","hh:mm:ss"},
+                {"ErrorDateTime","Introduzca la hora y la fecha!"}
+
         };
     }
 }
